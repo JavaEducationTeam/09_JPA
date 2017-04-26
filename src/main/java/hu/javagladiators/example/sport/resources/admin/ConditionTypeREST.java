@@ -3,7 +3,8 @@ package hu.javagladiators.example.sport.resources.admin;
 
 
 import hu.javagladiators.example.sport.datamodel.ConditionType;
-import hu.javagladiators.example.sport.services.api.ConditionTypeService;
+import hu.javagladiators.example.sport.services.api.ConditionService;
+import hu.javagladiators.example.sport.services.api.SportService;
 import hu.javagladiators.example.sport.viewmodel.IdNamePOJO;
 import hu.javagladiators.example.sport.viewmodel.system.MessagePOJO;
 import hu.javagladiators.example.sport.viewmodel.NameDescriptionPOJO;
@@ -13,7 +14,9 @@ import io.swagger.annotations.Api;
 import java.util.ArrayList;
 
 import java.util.List;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -29,8 +32,11 @@ import javax.ws.rs.core.MediaType;
 @Api(value = "Condition Type administration")
 public class ConditionTypeREST {
     @Inject
-    ConditionTypeService service;
+    ConditionService service;
 
+    @Inject
+    SportService serviceSport;
+    
     @Inject
     BasicEntitiesDTO dtoBasicIdNameDescription;
     
@@ -42,10 +48,10 @@ public class ConditionTypeREST {
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public PagerPOJO entityList(@QueryParam("order") String order, @QueryParam("offset") long offset, @QueryParam("limit") long limit){
         PagerPOJO res = new PagerPOJO();
-        res.setTotal(service.getAll().size());
+        res.setTotal(service.getAllConditionType().size());
         List data = new ArrayList();
-       for(long i=offset;i<(offset+limit) && i<service.getAll().size();i++)
-            data.add(service.getAll().get((int)i));
+       for(long i=offset;i<(offset+limit) && i<service.getAllConditionType().size();i++)
+            data.add(service.getAllConditionType().get((int)i));
         res.setRows(data);
         return res;
     }
@@ -54,7 +60,7 @@ public class ConditionTypeREST {
     @Path("/entity/all")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public List<ConditionType> entityList(){
-        return service.getAll();
+        return service.getAllConditionType();
     }
 
         @GET
@@ -62,7 +68,7 @@ public class ConditionTypeREST {
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public List<IdNamePOJO> idnemeList(){
         List<IdNamePOJO> res = new ArrayList<>();
-        List<ConditionType> entities = service.getAll();
+        List<ConditionType> entities = service.getAllConditionType();
         for(ConditionType entity : entities)
             res.add(IdNamePOJO.factoryDTO(entity));
         return res;
@@ -73,7 +79,7 @@ public class ConditionTypeREST {
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public List<NameDescriptionPOJO> nemedescriptionList(){
         List<NameDescriptionPOJO> res = new ArrayList<>();
-        List<ConditionType> entities = service.getAll();
+        List<ConditionType> entities = service.getAllConditionType();
         for (ConditionType entity : entities) {
             res.add(dtoBasicIdNameDescription.factory(entity));
         }
@@ -84,7 +90,7 @@ public class ConditionTypeREST {
     @Path("/{id}") 
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public ConditionType findById(@PathParam("id") int id){
-        return service.getById(id);
+        return service.getConditionTypeById(id);
     }
 
    @POST

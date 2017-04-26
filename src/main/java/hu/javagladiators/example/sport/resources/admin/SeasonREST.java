@@ -2,6 +2,7 @@ package hu.javagladiators.example.sport.resources.admin;
 
 import hu.javagladiators.example.sport.datamodel.Season;
 import hu.javagladiators.example.sport.services.api.SeasonService;
+import hu.javagladiators.example.sport.services.api.SportService;
 import hu.javagladiators.example.sport.viewmodel.IdNamePOJO;
 import hu.javagladiators.example.sport.viewmodel.system.MessagePOJO;
 import hu.javagladiators.example.sport.viewmodel.NameDescriptionPOJO;
@@ -11,7 +12,9 @@ import io.swagger.annotations.Api;
 import java.util.ArrayList;
 
 import java.util.List;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -28,7 +31,9 @@ import javax.ws.rs.core.MediaType;
 public class SeasonREST {
     @Inject
     SeasonService service;
-
+    @Inject
+    SportService serviceSport;
+    
     @Inject
     BasicEntitiesDTO dtoBasicIdNameDescription;
     

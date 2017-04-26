@@ -1,37 +1,37 @@
 package hu.javagladiators.example.sport.viewmodel.condition;
 
 import hu.javagladiators.example.sport.datamodel.Condition;
-import hu.javagladiators.example.sport.services.api.ConditionTypeService;
+import hu.javagladiators.example.sport.services.api.ConditionService;
 import hu.javagladiators.example.sport.services.api.SportService;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 /**
  * @author krisztian
  */
-@Singleton
-@Startup
+@ApplicationScoped
 public class ConditionDTO {
+    
     @Inject
-    private ConditionTypeService service;
+    private ConditionService service;
     
     @Inject
     private SportService serviceSport;
             
-    public ConditionDTO() {
-    }
+   
     
     public Condition factory(ConditionPOJO pModel, Condition pEntity){
         if(pEntity == null ) pEntity = new Condition();
         pEntity.setName(pModel.getName());
         if(pModel.getSportid()>0)
-            pEntity.setSport(serviceSport.getById(pModel.getSportid()));
+            pEntity.setSport(serviceSport.getSportById(pModel.getSportid()));
         pEntity.setDescription(pModel.getDescription());
         pEntity.setMinumum(pModel.getMinimum());
         pEntity.setMaximum(pModel.getMaximum());
         pEntity.setEqual(pModel.getEqual());
-        pEntity.setType(service.getById(pModel.getTypeid()));
+        pEntity.setType(service.getConditionTypeById(pModel.getTypeid()));
         return pEntity;
     }
     

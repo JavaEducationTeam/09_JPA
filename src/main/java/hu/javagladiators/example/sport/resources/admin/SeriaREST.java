@@ -2,17 +2,19 @@ package hu.javagladiators.example.sport.resources.admin;
 
 import hu.javagladiators.example.sport.datamodel.Seria;
 import hu.javagladiators.example.sport.services.api.SeriaService;
+import hu.javagladiators.example.sport.services.api.SportService;
 import hu.javagladiators.example.sport.viewmodel.IdNamePOJO;
 import hu.javagladiators.example.sport.viewmodel.system.MessagePOJO;
 import hu.javagladiators.example.sport.viewmodel.NameDescriptionPOJO;
 import hu.javagladiators.example.sport.viewmodel.BasicEntitiesDTO;
 import hu.javagladiators.example.sport.viewmodel.system.PagerPOJO;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import java.util.ArrayList;
 
 import java.util.List;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -26,9 +28,13 @@ import javax.ws.rs.core.MediaType;
  */
 @Path("/seria")
 @Api(value = "Seria administration")
+@Stateless
 public class SeriaREST {
     @Inject
     SeriaService service;
+
+    @Inject
+    SportService serviceSport;
 
     @Inject
     BasicEntitiesDTO dtoBasicIdNameDescription;

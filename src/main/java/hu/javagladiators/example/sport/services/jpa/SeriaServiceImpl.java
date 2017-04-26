@@ -1,20 +1,21 @@
 package hu.javagladiators.example.sport.services.jpa;
 
 import hu.javagladiators.example.sport.datamodel.Seria;
-import hu.javagladiators.example.sport.services.GenericDaoService;
+import hu.javagladiators.example.sport.services.GenericDaoServiceImpl;
 import hu.javagladiators.example.sport.services.api.SeriaService;
 import java.util.HashMap;
 import java.util.List;
-import javax.ejb.Singleton;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * @author krisztian
  */
-@Singleton
+@RequestScoped
 public class SeriaServiceImpl implements SeriaService{
     @Inject
-    GenericDaoService dao;
+    GenericDaoServiceImpl dao;
     
     @Override
     public List<Seria> getAll() {

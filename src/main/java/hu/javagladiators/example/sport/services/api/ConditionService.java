@@ -9,9 +9,13 @@ import java.util.List;
  * @author krisztian
  */
 public interface ConditionService {
-    public Condition getById(Integer pID);
-    public List<Condition> getByType(ConditionType pType);
-    public List<Condition> getByType(ConditionType pType, Sport pSport);
+    public Condition getConditionById(Integer pID);
+    public List<Condition> getConditionByType(ConditionType pType);
+    public List<Condition> getConditionByType(ConditionType pType, Sport pSport);
     public void save(Condition pEntity);
-    
+ 
+    public List<ConditionType> getAllConditionType();
+    public ConditionType getConditionTypeById(Integer pID);
+    public ConditionType getConditionTypeByName(String pName);
+    public void save(ConditionType pEntity);
 }

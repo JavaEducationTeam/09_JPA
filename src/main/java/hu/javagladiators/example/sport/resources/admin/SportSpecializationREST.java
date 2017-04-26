@@ -5,7 +5,6 @@ package hu.javagladiators.example.sport.resources.admin;
 
 import hu.javagladiators.example.sport.datamodel.SportSpecialization;
 import hu.javagladiators.example.sport.services.api.SportService;
-import hu.javagladiators.example.sport.services.api.SportSpecializationService;
 import hu.javagladiators.example.sport.viewmodel.IdNamePOJO;
 import hu.javagladiators.example.sport.viewmodel.system.MessagePOJO;
 import hu.javagladiators.example.sport.viewmodel.NameDescriptionPOJO;
@@ -17,7 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -35,13 +36,12 @@ import org.slf4j.LoggerFactory;
 @Path("/sportspecialization")
 @Api(value = "Sports specialization administration")
 @PermitAll
+@Stateless
 public class SportSpecializationREST {
     Logger log = LoggerFactory.getLogger(SportSpecializationREST.class.getSimpleName());
     
     @Inject
-    SportSpecializationService service;
-    @Inject
-    SportService serviceSport;
+    SportService service;
 
     @Inject
     BasicEntitiesDTO dtoBasicIdNameDescription;
@@ -53,7 +53,7 @@ public class SportSpecializationREST {
     @Path("/entity/{sportid}") 
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public List<SportSpecialization> entityList(@PathParam("sportid") int id){
-        return service.getAllForSport(serviceSport.getById(id));
+        return service.getAllSportSpecializationForSport(service.getSportById(id));
     }
 
     @GET
@@ -61,7 +61,7 @@ public class SportSpecializationREST {
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public List<IdNamePOJO> idnemeList(@PathParam("sportid") int id){
         List<IdNamePOJO> res = new ArrayList<>();
-        List<SportSpecialization> entities = service.getAllForSport(serviceSport.getById(id));
+        List<SportSpecialization> entities = service.getAllSportSpecializationForSport(service.getSportById(id));
         for(SportSpecialization entity : entities)
             res.add(IdNamePOJO.factoryDTO(entity));
         return res;
@@ -72,7 +72,7 @@ public class SportSpecializationREST {
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public List<NameDescriptionPOJO> nemedescriptionList(@PathParam("sportid") int id){
         List<NameDescriptionPOJO> res = new ArrayList<>();
-        List<SportSpecialization> entities = service.getAllForSport(serviceSport.getById(id));
+        List<SportSpecialization> entities = service.getAllSportSpecializationForSport(service.getSportById(id));
         for(SportSpecialization entity : entities)
             res.add(dtoBasicIdNameDescription.factory(entity));
         return res;

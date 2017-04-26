@@ -3,18 +3,13 @@ package hu.javagladiators.example.sport.viewmodel.championship;
 import hu.javagladiators.example.sport.datamodel.Championship;
 import hu.javagladiators.example.sport.datamodel.Round;
 import hu.javagladiators.example.sport.datamodel.SportEvent;
-import hu.javagladiators.example.sport.resources.admin.ChampionshipREST;
-import hu.javagladiators.example.sport.services.api.ChampionshipService;
 import hu.javagladiators.example.sport.services.api.ConditionService;
 import hu.javagladiators.example.sport.services.api.SeasonService;
 import hu.javagladiators.example.sport.services.api.SeriaService;
 import hu.javagladiators.example.sport.services.api.SportService;
-import hu.javagladiators.example.sport.services.api.SportSpecializationService;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,31 +17,27 @@ import org.slf4j.LoggerFactory;
 /**
  * @author krisztian
  */
-@Singleton
+@ApplicationScoped
 public class ChampionshipDTO {
     private static final Logger log = LoggerFactory.getLogger(ChampionshipDTO.class.getSimpleName());
     
     @Inject
-    SportService serviceSport;
+    private SportService serviceSport;
 
     @Inject
-    SportSpecializationService serviceSportSpecialization;
+    private SeriaService serviceSeria;
     
     @Inject
-    SeriaService serviceSeria;
-    
-    @Inject
-    SeasonService serviceSeason;
+    private SeasonService serviceSeason;
 
     @Inject
-    ConditionService serviceCondition;
+    private ConditionService serviceCondition;
 
-    @Inject
-    ChampionshipService serviceChampionship;
-    
     public ChampionshipDTO() {
     }
+
     
+
     
     public ChampionshipWithIDsPOJO factory(Championship pModel){
         ChampionshipWithIDsPOJO res = new ChampionshipWithIDsPOJO();
@@ -83,13 +74,13 @@ public class ChampionshipDTO {
         int i=0;
         do{
             event= new SportEvent();
-            event.setSport(serviceSport.getById(pModel.getSportid()));
+            event.setSport(serviceSport.getSportById(pModel.getSportid()));
             if(pModel.getSpecializationid() != null && pModel.getSpecializationid().size()>i){
-                event.setSpecialization(serviceSportSpecialization.getById(pModel.getSpecializationid().get(i)));
+                event.setSpecialization(serviceSport.getSportSpecializationById(pModel.getSpecializationid().get(i)));
             }
             if(pModel.getConditionid() != null && pModel.getConditionid().size()>0)
                 for(Integer conditionid: pModel.getConditionid()){
-                    event.addCondition(serviceCondition.getById(conditionid));
+                    event.addCondition(serviceCondition.getConditionById(conditionid));
                 }
             
             res.add(event);

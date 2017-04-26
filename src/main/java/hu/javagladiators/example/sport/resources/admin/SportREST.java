@@ -15,7 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -35,6 +37,7 @@ import org.slf4j.LoggerFactory;
 @Path("/sport")
 @Api(value = "Sportágak adminisztrációja")
 @PermitAll
+@Stateless
 public class SportREST {
     Logger log = LoggerFactory.getLogger(SportREST.class.getSimpleName());
     
@@ -99,7 +102,7 @@ public class SportREST {
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     @ApiOperation(value = "This method allows to retrieve a certain sport.")    
     public Sport findById(@PathParam("id") int id){
-        return service.getById(id);
+        return service.getSportById(id);
     }
 
 

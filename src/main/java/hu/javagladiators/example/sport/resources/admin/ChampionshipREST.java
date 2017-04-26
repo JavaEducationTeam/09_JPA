@@ -7,6 +7,10 @@ import hu.javagladiators.example.sport.datamodel.Championship;
 import hu.javagladiators.example.sport.datamodel.Round;
 import hu.javagladiators.example.sport.datamodel.SportEvent;
 import hu.javagladiators.example.sport.services.api.ChampionshipService;
+import hu.javagladiators.example.sport.services.api.ConditionService;
+import hu.javagladiators.example.sport.services.api.SeasonService;
+import hu.javagladiators.example.sport.services.api.SeriaService;
+import hu.javagladiators.example.sport.services.api.SportService;
 import hu.javagladiators.example.sport.viewmodel.championship.ChampionshipWithIDsPOJO;
 import hu.javagladiators.example.sport.viewmodel.IdNamePOJO;
 import hu.javagladiators.example.sport.viewmodel.system.MessagePOJO;
@@ -21,6 +25,7 @@ import java.util.ArrayList;
 
 import java.util.List;
 import java.util.Set;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -42,9 +47,21 @@ public class ChampionshipREST {
 
     @Inject
     ChampionshipService service;
-        
+    
     @Inject
-    ChampionshipDTO dtoChampionship;// = new ChampionshipDTO();
+    SportService serviceSport;
+    
+    @Inject
+    SeriaService serviceSeria;
+    
+    @Inject 
+    SeasonService serviceSeason;
+    
+    @Inject
+    ConditionService serviceCondition;
+            
+    @Inject
+    ChampionshipDTO dtoChampionship ;//= new ChampionshipDTO(serviceSport, serviceSeria, serviceSeason, serviceCondition);
 
     @Inject
     BasicEntitiesDTO dtoBasicIdNameDescription;

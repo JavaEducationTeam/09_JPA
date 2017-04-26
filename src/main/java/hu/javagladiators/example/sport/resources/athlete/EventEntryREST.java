@@ -1,21 +1,17 @@
 package hu.javagladiators.example.sport.resources.athlete;
 
-import hu.javagladiators.example.sport.datamodel.Championship;
 import hu.javagladiators.example.sport.datamodel.SportEvent;
 import hu.javagladiators.example.sport.services.api.ChampionshipService;
 import hu.javagladiators.example.sport.viewmodel.IdNamePOJO;
-import hu.javagladiators.example.sport.viewmodel.NameDescriptionPOJO;
 import hu.javagladiators.example.sport.viewmodel.system.MessagePOJO;
 import hu.javagladiators.framework.datamodel.Users;
 import hu.javagladiators.framework.services.api.UserService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiParam;
 import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -29,6 +25,7 @@ import org.slf4j.LoggerFactory;
 @Path("/entry")
 @Api(value = "Jelentkezés")
 @PermitAll
+@Singleton
 public class EventEntryREST {
     Logger log = LoggerFactory.getLogger(EventEntryREST.class.getSimpleName());
  

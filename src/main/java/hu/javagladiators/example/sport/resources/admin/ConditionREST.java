@@ -3,7 +3,6 @@ package hu.javagladiators.example.sport.resources.admin;
 import hu.javagladiators.example.sport.datamodel.Condition;
 import hu.javagladiators.example.sport.datamodel.ConditionType;
 import hu.javagladiators.example.sport.services.api.ConditionService;
-import hu.javagladiators.example.sport.services.api.ConditionTypeService;
 import hu.javagladiators.example.sport.services.api.SportService;
 import hu.javagladiators.example.sport.viewmodel.IdNamePOJO;
 import hu.javagladiators.example.sport.viewmodel.system.MessagePOJO;
@@ -18,7 +17,9 @@ import io.swagger.annotations.ApiParam;
 import java.util.ArrayList;
 
 import java.util.List;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -35,6 +36,7 @@ import org.slf4j.LoggerFactory;
  */
 @Path("/condition")
 @Api(value = "Conditiond administration")
+@Stateless
 public class ConditionREST {
     Logger log = LoggerFactory.getLogger(ConditionREST.class.getSimpleName());
     
@@ -44,9 +46,6 @@ public class ConditionREST {
     @Inject
     SportService serviceSport;
     
-    @Inject
-    ConditionTypeService serviceConditionType;
-
     @Inject
     BasicEntitiesDTO dtoBasicIdNameDescription;
     
@@ -66,12 +65,12 @@ public class ConditionREST {
            @ApiParam(value = "Szűrési típus, pl: éltkor, nem") @PathParam("typeid") int id
     ){
         PagerPOJO res = new PagerPOJO();
-        ConditionType st = serviceConditionType.getById(id);
-        res.setTotal(service.getByType(st).size());
+        ConditionType st = service.getConditionTypeById(id);
+        res.setTotal(service.getConditionByType(st).size());
         List data = new ArrayList();
         
-       for(long i=offset;i<(offset+limit) && i<service.getByType(st).size();i++)
-            data.add(service.getByType(st).get((int)i));
+       for(long i=offset;i<(offset+limit) && i<service.getConditionByType(st).size();i++)
+            data.add(service.getConditionByType(st).get((int)i));
         res.setRows(data);
         return res;
     }
@@ -82,17 +81,17 @@ public class ConditionREST {
     public List<Condition> entityList(
         @ApiParam(value = "Szűrési típus, pl: éltkor, nem") @PathParam("typeid") int id
     ){
-        ConditionType st = serviceConditionType.getById(id);
-        return service.getByType(st);
+        ConditionType st = service.getConditionTypeById(id);
+        return service.getConditionByType(st);
     }
 
     @GET
     @Path("/idname/all/{typeid}") 
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public List<IdNamePOJO> idnemeList(@PathParam("typeid") int id){
-        ConditionType st = serviceConditionType.getById(id);
+        ConditionType st = service.getConditionTypeById(id);
         List<IdNamePOJO> res = new ArrayList<>();
-        List<Condition> entities = service.getByType(st);
+        List<Condition> entities = service.getConditionByType(st);
         for(Condition entity : entities)
             res.add(IdNamePOJO.factoryDTO(entity));
         return res;
@@ -102,9 +101,9 @@ public class ConditionREST {
     @Path("namedescription/all/{typeid}") 
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public List<NameDescriptionPOJO> nemedescriptionList(@PathParam("typeid") int id){
-        ConditionType st = serviceConditionType.getById(id);
+        ConditionType st = service.getConditionTypeById(id);
         List<NameDescriptionPOJO> res = new ArrayList<>();
-        List<Condition> entities = service.getByType(st);
+        List<Condition> entities = service.getConditionByType(st);
         for(Condition entity : entities)
             res.add(dtoBasicIdNameDescription.factory(entity));
         return res;
@@ -114,7 +113,7 @@ public class ConditionREST {
     @Path("/{id}") 
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public Condition findById(@PathParam("id") int id){
-        return service.getById(id);
+        return service.getConditionById(id);
     }
     
     @GET
@@ -124,7 +123,7 @@ public class ConditionREST {
            @ApiParam(value = "Sport azonosító", required = false) @PathParam("sportid") @DefaultValue("0") int pSportid
     ){
         List<PickListPOJO> res = new ArrayList<>();
-        List<ConditionType> types = serviceConditionType.getAll();
+        List<ConditionType> types = service.getAllConditionType();
         PickListPOJO tmp;
         List<Condition> coditions4Type;
         for(ConditionType type:types){
@@ -132,9 +131,9 @@ public class ConditionREST {
             tmp.setTitle(type.getName());
             log.info(":::"+pSportid+":");
             if(pSportid >0)
-                coditions4Type = service.getByType(type,serviceSport.getById(pSportid));
+                coditions4Type = service.getConditionByType(type,serviceSport.getSportById(pSportid));
             else
-                coditions4Type = service.getByType(type);
+                coditions4Type = service.getConditionByType(type);
             for(Condition c:coditions4Type){
                 tmp.addUnselected(IdNamePOJO.factoryDTO(c));
             }

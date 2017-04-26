@@ -1,19 +1,20 @@
 package hu.javagladiators.framework.services.jpa;
 
-import hu.javagladiators.example.sport.services.GenericDaoService;
+import hu.javagladiators.example.sport.services.GenericDaoServiceImpl;
 import hu.javagladiators.framework.datamodel.Users;
 import hu.javagladiators.framework.services.api.UserService;
 import java.util.HashMap;
-import javax.ejb.Singleton;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * @author krisztian
  */
-@Singleton
+@RequestScoped
 public class UserServiceImpl implements UserService{
     @Inject
-    GenericDaoService dao;
+    GenericDaoServiceImpl dao;
     
     @Override
     public Users getById(String pName) {

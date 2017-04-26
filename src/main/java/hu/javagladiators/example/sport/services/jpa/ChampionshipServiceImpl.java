@@ -5,20 +5,22 @@ import hu.javagladiators.example.sport.datamodel.Season;
 import hu.javagladiators.example.sport.datamodel.Seria;
 import hu.javagladiators.example.sport.datamodel.Sport;
 import hu.javagladiators.example.sport.datamodel.SportEvent;
-import hu.javagladiators.example.sport.services.GenericDaoService;
+import hu.javagladiators.example.sport.services.GenericDaoServiceImpl;
 import hu.javagladiators.example.sport.services.api.ChampionshipService;
 import java.util.HashMap;
 import java.util.List;
-import javax.ejb.Singleton;
+import javax.enterprise.context.RequestScoped;
+
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * @author krisztian
  */
-@Singleton
+@RequestScoped
 public class ChampionshipServiceImpl implements ChampionshipService{
     @Inject
-    GenericDaoService dao;
+    GenericDaoServiceImpl dao;
     
     @Override
     public List<Championship> getAll() {
